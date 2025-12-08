@@ -1,0 +1,59 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Skyline Dreams",
+      "artist": "Luna Waves",
+      "album": "Night Lights",
+      "duration": "3:42",
+      "mood": "happy",
+      "genre": "pop",
+      "cover": "covers/skyline.jpg",
+      "path": "tracks/skyline.mp3"
+    },
+    {
+      "id": 2,
+      "title": "Silent Echoes",
+      "artist": "Nova Pulse",
+      "album": "Deep Mind",
+      "duration": "4:15",
+      "mood": "sad",
+      "genre": "lofi",
+      "cover": "covers/silent.jpg",
+      "path": "tracks/silent.mp3"
+    },
+    {
+      "id": 3,
+      "title": "Rainy Nights",
+      "artist": "Echo Beats",
+      "album": "Lofi Hours",
+      "duration": "5:01",
+      "mood": "chill",
+      "genre": "lofi",
+      "cover": "covers/rain.jpg",
+      "path": "tracks/rain.mp3"
+    },
+    {
+      "id": 4,
+      "title": "Firestorm",
+      "artist": "DJ Vector",
+      "album": "Electro Rush",
+      "duration": "3:10",
+      "mood": "energetic",
+      "genre": "edm",
+      "cover": "covers/firestorm.jpg",
+      "path": "tracks/firestorm.mp3"
+    },
+    {
+      "id": 5,
+      "title": "Calm Breeze",
+      "artist": "Oceanic Waves",
+      "album": "Meditation",
+      "duration": "6:00",
+      "mood": "relax",
+      "genre": "ambient",
+      "cover": "covers/breeze.jpg",
+      "path": "tracks/breeze.mp3"
+    }
+  ]
+}

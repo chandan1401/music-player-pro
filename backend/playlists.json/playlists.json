@@ -1,0 +1,19 @@
+{
+  "playlists": [
+    {
+      "id": 1,
+      "name": "My Favorites",
+      "songIds": [1, 3, 4]
+    },
+    {
+      "id": 2,
+      "name": "Chill Vibes",
+      "songIds": [3, 5]
+    },
+    {
+      "id": 3,
+      "name": "Workout Mix",
+      "songIds": [1, 4]
+    }
+  ]
+}

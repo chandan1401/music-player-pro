@@ -1,0 +1,95 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Happy Tune",
+      "artist": "John Doe",
+      "genre": "pop",
+      "path": "songs/happy1.mp3",
+      "cover": "images/happy1.jpg",
+      "duration": 180
+    },
+    {
+      "id": 2,
+      "title": "Calm Lofi",
+      "artist": "Lofi Beats",
+      "genre": "lofi",
+      "path": "songs/lofi1.mp3",
+      "cover": "images/lofi1.jpg",
+      "duration": 210
+    },
+    {
+      "id": 3,
+      "title": "Electric Dreams",
+      "artist": "Synth Wave",
+      "genre": "electronic",
+      "path": "songs/electric.mp3",
+      "cover": "images/electric.jpg",
+      "duration": 245
+    },
+    {
+      "id": 4,
+      "title": "Jazz Nights",
+      "artist": "Blue Note",
+      "genre": "jazz",
+      "path": "songs/jazz.mp3",
+      "cover": "images/jazz.jpg",
+      "duration": 320
+    },
+    {
+      "id": 5,
+      "title": "Rock Anthem",
+      "artist": "Thunder Road",
+      "genre": "rock",
+      "path": "songs/rock.mp3",
+      "cover": "images/rock.jpg",
+      "duration": 280
+    },
+    {
+      "id": 6,
+      "title": "Summer Vibes",
+      "artist": "Beach Boys",
+      "genre": "pop",
+      "path": "songs/summer.mp3",
+      "cover": "images/summer.jpg",
+      "duration": 200
+    },
+    {
+      "id": 7,
+      "title": "Midnight Rain",
+      "artist": "Lofi Beats",
+      "genre": "lofi",
+      "path": "songs/rain.mp3",
+      "cover": "images/rain.jpg",
+      "duration": 240
+    },
+    {
+      "id": 8,
+      "title": "Neon City",
+      "artist": "Synth Wave",
+      "genre": "electronic",
+      "path": "songs/neon.mp3",
+      "cover": "images/neon.jpg",
+      "duration": 260
+    },
+    {
+      "id": 9,
+      "title": "Sunset Drive",
+      "artist": "Lofi Beats",
+      "genre": "lofi",
+      "path": "songs/lofi1.mp3",
+      "cover": "images/lofi1.jpg",
+      "duration": 205
+    },
+    {
+      "id": 10,
+      "title": "Rock Revival",
+      "artist": "Thunder Road",
+      "genre": "rock",
+      "path": "songs/rock.mp3",
+      "cover": "images/rock.jpg",
+      "duration": 275
+    }
+  ]
+}
+
