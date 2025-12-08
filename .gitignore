@@ -5,3 +5,9 @@ dist/
 *.log
 .vscode/
 .idea/
+
+# Large media files (over 100MB)
+backend/public/songs/*.mp3
+backend/public/images/*.jpg
+backend/public/images/*.png
+backend/public/images/*.jpeg
