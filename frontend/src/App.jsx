@@ -14,6 +14,7 @@ export default function App() {
   const [filterGenre, setFilterGenre] = useState('all');
   const [favorites, setFavorites] = useState([]);
   const [stats, setStats] = useState({ totalPlayed: 0, totalTime: 0 });
+  const [activePlaylist, setActivePlaylist] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:4000/api/songs')
@@ -44,10 +45,20 @@ export default function App() {
     try { localStorage.setItem('stats', JSON.stringify(stats)); } catch (e) {}
   }, [stats]);
 
-  const playSongAt = (index) => {
-    setCurrentIndex(index);
-    setPlaying(true);
-    updateStats(index);
+  const playSongAt = (index, isFromFiltered = true) => {
+    // If clicking from filtered list, find actual index in full songs array
+    if (isFromFiltered) {
+      const filteredSongs = getFilteredSongs();
+      const actualSong = filteredSongs[index];
+      const actualIndex = songs.findIndex(s => s.id === actualSong.id);
+      setCurrentIndex(actualIndex);
+      setPlaying(true);
+      updateStats(actualIndex);
+    } else {
+      setCurrentIndex(index);
+      setPlaying(true);
+      updateStats(index);
+    }
   };
 
   const changeTheme = (themeName) => {
@@ -78,7 +89,8 @@ export default function App() {
       const artist = (s.artist || '').toLowerCase();
       const matchesQuery = !q || title.includes(q) || artist.includes(q);
       const matchesGenre = filterGenre === 'all' || s.genre === filterGenre;
-      return matchesQuery && matchesGenre;
+      const matchesPlaylist = !activePlaylist || (activePlaylist.songIds && activePlaylist.songIds.includes(s.id));
+      return matchesQuery && matchesGenre && matchesPlaylist;
     });
 
     switch(sortBy) {
@@ -105,13 +117,41 @@ export default function App() {
     <div className={`app ${theme === 'dark' ? '' : theme + '-theme'}`}>
       <header>
         <div className="header-inner">
+          {activePlaylist && (
+            <button 
+              className="back-btn"
+              onClick={() => setActivePlaylist(null)}
+              style={{
+                position: 'absolute',
+                left: '1rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,0.1)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                cursor: 'pointer',
+                fontSize: '1.2rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.2)'}
+              onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.1)'}
+              title="Back to all songs"
+            >
+              ←
+            </button>
+          )}
           <div className="brand">
             <div className="brand-mark">
               <img src="/logo.svg" alt="Music Player logo" />
             </div>
             <div className="brand-copy">
               <h1>Music Player Pro</h1>
-              <p className="subhead">Polished, pitch-ready listening experience.</p>
+              <p className="subhead">{activePlaylist ? `${activePlaylist.name} Playlist` : 'Polished, pitch-ready listening experience.'}</p>
             </div>
           </div>
           <div className="header-content">
@@ -170,14 +210,19 @@ export default function App() {
         />
 
         <aside>
-          <PlaylistManager songs={songs} onPlay={playSongAt}/>
+          <PlaylistManager 
+            songs={songs} 
+            onPlay={playSongAt}
+            activePlaylist={activePlaylist}
+            onSelectPlaylist={setActivePlaylist}
+          />
           <div className="favorites-widget">
             <h3>❤️ Favorites</h3>
             <div className="favorites-list">
               {songs.filter(s => favorites.includes(s.id)).map((song, idx) => (
                 <div key={song.id} className="fav-song">
                   <span>{song.title}</span>
-                  <button onClick={() => playSongAt(songs.indexOf(song))}>▶</button>
+                  <button onClick={() => playSongAt(songs.indexOf(song), false)}>▶</button>
                 </div>
               ))}
             </div>

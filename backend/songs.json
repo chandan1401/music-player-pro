@@ -6,7 +6,7 @@
       "artist": "Animesh",
       "genre": "lofi",
       "path": "songs/Darshan Raval lofi Mashup  - Animesh [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/Darshan raval.jpg",
       "duration": 240
     },
     {
@@ -15,7 +15,7 @@
       "artist": "Various Artists",
       "genre": "pop",
       "path": "songs/Dhun [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/dhun.jpg",
       "duration": 210
     },
     {
@@ -24,7 +24,7 @@
       "artist": "Various Artists",
       "genre": "pop",
       "path": "songs/Khoobsurat [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/khoobsurat.jpg",
       "duration": 200
     },
     {
@@ -33,7 +33,7 @@
       "artist": "Yo Yo Honey Singh",
       "genre": "pop",
       "path": "songs/Love Dose [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/love dose.jpg",
       "duration": 195
     },
     {
@@ -42,7 +42,7 @@
       "artist": "Female Version",
       "genre": "romantic",
       "path": "songs/Mera Hua (Female Version) [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/mera hua.jpg",
       "duration": 220
     },
     {
@@ -51,7 +51,7 @@
       "artist": "Female Version",
       "genre": "romantic",
       "path": "songs/Saiyaara Reprise - Female [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/saiyara.jpg",
       "duration": 230
     },
     {
@@ -60,8 +60,97 @@
       "artist": "Various Artists",
       "genre": "romantic",
       "path": "songs/Tum Ho Toh [128 Kbps]-(SongsPk.com.se).mp3",
-      "cover": "images/lofi1.jpg",
+      "cover": "images/tum ho toh.jpg",
       "duration": 215
+    },
+    {
+      "id": 8,
+      "title": "Blue",
+      "artist": "Yung Kai",
+      "genre": "pop",
+      "path": "songs/Blue (Yung Kai)-(SambalpuriStar.In).mp3",
+      "cover": "images/blue.jpg",
+      "duration": 180
+    },
+    {
+      "id": 9,
+      "title": "Chahoon Tujhe",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/71 - Chahoon Tujhe - K.K.-(Mr-Jat.in).mp3",
+      "cover": "images/Best of KK/Chahoon Tujhe.jpg",
+      "duration": 250
+    },
+    {
+      "id": 10,
+      "title": "Khuda Jaane",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/81 - Khuda Jaane (Bachna Ae Haseeno) - K.K.-(Mr-Jat.in).mp3",
+      "cover": "images/Best of KK/Khuda jaane.jpg",
+      "duration": 285
+    },
+    {
+      "id": 11,
+      "title": "Teri Yaadon Mein",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/97 - Teri Yaadon Mein (The Killer) - K.K.-(Mr-Jat.in).mp3",
+      "cover": "images/Best of KK/Teri Yaadon Mein.jpg",
+      "duration": 245
+    },
+    {
+      "id": 12,
+      "title": "Tu Aashiqui Hai",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/99 - Tu Aashiqui Hai (Jhankaar Beats) - K.K.-(Mr-Jat.in).mp3",
+      "cover": "images/Best of KK/Tu Aashiqui Hai.jpg",
+      "duration": 270
+    },
+    {
+      "id": 13,
+      "title": "Kya Mujhe Pyar Hai",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/Kya Mujhe Pyar Hai (PenduJatt.Com.Se).mp3",
+      "cover": "images/Best of KK/Kya Mujhe Pyar Hai.jpg",
+      "duration": 265
+    },
+    {
+      "id": 14,
+      "title": "Labon Ko",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/Labon Ko (PenduJatt.Com.Se).mp3",
+      "cover": "images/Best of KK/Labon Ko.jpg",
+      "duration": 255
+    },
+    {
+      "id": 15,
+      "title": "Mera Pehla Pehla Pyaar",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/Mera Pehla Pehla Pyaar (PenduJatt.Com.Se).mp3",
+      "cover": "images/Best of KK/Mera Pehla Pehla Pyaar.jpg",
+      "duration": 240
+    },
+    {
+      "id": 16,
+      "title": "Soniye",
+      "artist": "K.K.",
+      "genre": "romantic",
+      "playlist": "Best of KK",
+      "path": "songs/Best of KK/Soniye (PenduJatt.Com.Se).mp3",
+      "cover": "images/Best of KK/Soniye.jpg",
+      "duration": 230
     }
   ]
 }

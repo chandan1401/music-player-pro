@@ -8,11 +8,61 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const app = express();
-app.use(helmet());
+
+// STRICT CORS - Only allow specific origin, read-only access
+const ALLOWED_ORIGINS = ['http://localhost:3000'];
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (direct browser requests for media)
+    // or from allowed origins
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Access denied'));
+    }
+  },
+  methods: ['GET'],  // ONLY allow GET requests - no modifications
+  credentials: false,  // No credentials allowed
+  maxAge: 600,  // Cache preflight for 10 minutes
+  optionsSuccessStatus: 204
+}));
+
+// Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      mediaSrc: ["'self'", 'http://localhost:3000']
+    }
+  }
+}));
+
 app.use(compression());
 app.use(morgan('dev'));
-app.use(cors({ origin: 'http://localhost:3000' }));
-app.use(express.json());
+app.use(express.json({ limit: '1kb' }));  // Limit payload size
+
+// Rate limiting middleware
+const requestCounts = new Map();
+app.use((req, res, next) => {
+  const ip = req.ip;
+  const now = Date.now();
+  const windowMs = 60000; // 1 minute
+  const maxRequests = 100;
+  
+  if (!requestCounts.has(ip)) {
+    requestCounts.set(ip, []);
+  }
+  
+  const timestamps = requestCounts.get(ip).filter(t => now - t < windowMs);
+  
+  if (timestamps.length >= maxRequests) {
+    return res.status(429).json({ error: 'Too many requests' });
+  }
+  
+  timestamps.push(now);
+  requestCounts.set(ip, timestamps);
+  next();
+});
 
 // static files: song mp3 and images
 app.use('/media', express.static(path.join(__dirname, 'public'), {
@@ -61,45 +111,16 @@ app.get('/api/playlists', (req, res, next) => {
   }
 });
 
-// POST create playlist
-app.post('/api/playlists', (req, res, next) => {
-  try {
-    const { name, songIds = [] } = req.body;
-    if (!name) return res.status(400).json({ error: 'Name required' });
-    const raw = fs.existsSync(PLAYLISTS_FILE) ? readJson(PLAYLISTS_FILE) : [];
-    const lists = (raw.playlists || raw || []).map(l => ({
-      ...l,
-      songIds: l.songIds ?? l.songs ?? []
-    }));
-    const newList = { id: Date.now(), name, songIds };
-    lists.push(newList);
-    const out = { playlists: lists };
-    writeJson(PLAYLISTS_FILE, out);
-    res.status(201).json(newList);
-  } catch (err) {
-    next(err);
+// SECURITY: ALL WRITE OPERATIONS DISABLED
+// Reject any POST, PUT, PATCH, DELETE requests
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+    return res.status(403).json({ 
+      error: 'Forbidden', 
+      message: 'Write operations are disabled. This API is read-only.' 
+    });
   }
-});
-
-// PUT add/remove song in playlist
-app.put('/api/playlists/:id', (req, res, next) => {
-  try {
-    const id = Number(req.params.id);
-    const { songIds } = req.body;
-    const raw = fs.existsSync(PLAYLISTS_FILE) ? readJson(PLAYLISTS_FILE) : [];
-    const lists = (raw.playlists || raw || []).map(l => ({
-      ...l,
-      songIds: l.songIds ?? l.songs ?? []
-    }));
-    const idx = lists.findIndex(l => l.id === id);
-    if (idx === -1) return res.status(404).json({ error: 'Not found' });
-    lists[idx].songIds = songIds;
-    const out = { playlists: lists };
-    writeJson(PLAYLISTS_FILE, out);
-    res.json(lists[idx]);
-  } catch (err) {
-    next(err);
-  }
+  next();
 });
 
 // Health check
