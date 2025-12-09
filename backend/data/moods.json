@@ -1,0 +1,18 @@
+{
+  "1": ["sad", "neutral", "fear"],
+  "2": ["neutral", "happy"],
+  "3": ["happy", "surprise"],
+  "4": ["happy", "angry", "surprise"],
+  "5": ["sad", "neutral", "fear"],
+  "6": ["sad", "neutral", "fear"],
+  "7": ["happy", "neutral", "surprise"],
+  "8": ["sad", "neutral", "fear"],
+  "9": ["sad", "neutral"],
+  "10": ["sad", "neutral", "fear"],
+  "11": ["sad", "neutral"],
+  "12": ["happy", "neutral", "surprise"],
+  "13": ["sad", "neutral", "fear"],
+  "14": ["sad", "neutral"],
+  "15": ["happy", "neutral", "surprise"],
+  "16": ["happy", "neutral", "surprise"]
+}

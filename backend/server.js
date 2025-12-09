@@ -9,8 +9,8 @@ const morgan = require('morgan');
 
 const app = express();
 
-// STRICT CORS - Only allow specific origin, read-only access
-const ALLOWED_ORIGINS = ['http://localhost:3000'];
+// CORS - Allow specific origins, limited methods
+const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:5001'];
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (direct browser requests for media)
@@ -21,7 +21,7 @@ app.use(cors({
       callback(new Error('CORS policy: Access denied'));
     }
   },
-  methods: ['GET'],  // ONLY allow GET requests - no modifications
+  methods: ['GET', 'POST'],  // Allow GET and POST for mood-play endpoint
   credentials: false,  // No credentials allowed
   maxAge: 600,  // Cache preflight for 10 minutes
   optionsSuccessStatus: 204
@@ -111,8 +111,12 @@ app.get('/api/playlists', (req, res, next) => {
   }
 });
 
-// SECURITY: ALL WRITE OPERATIONS DISABLED
-// Reject any POST, PUT, PATCH, DELETE requests
+// Mood-based song selection endpoint (allows POST)
+const moodPlayRouter = require('./routes/moodPlay');
+app.use('/api/mood-play', moodPlayRouter);
+
+// SECURITY: ALL OTHER WRITE OPERATIONS DISABLED
+// Reject any POST, PUT, PATCH, DELETE requests (except mood-play which is handled above)
 app.use((req, res, next) => {
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
     return res.status(403).json({ 

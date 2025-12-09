@@ -3,6 +3,7 @@ import SongList from './Components/Songlist';
 import Player from './Components/player';
 import PlaylistManager from './Components/Playlistmanager';
 import SearchBar from './Components/SearchBar';
+import MoodPlayer from './Components/MoodPlayer';
 
 export default function App() {
   const [songs, setSongs] = useState([]);
@@ -15,6 +16,7 @@ export default function App() {
   const [favorites, setFavorites] = useState([]);
   const [stats, setStats] = useState({ totalPlayed: 0, totalTime: 0 });
   const [activePlaylist, setActivePlaylist] = useState(null);
+  const [showMoodPlayer, setShowMoodPlayer] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:4000/api/songs')
@@ -113,6 +115,22 @@ export default function App() {
 
   const genres = ['all', ...new Set(songs.map(s => s.genre).filter(Boolean))];
 
+  // Handle mood-based song selection from MoodPlayer
+  const handleMoodSongSelect = (song) => {
+    // Find the song in our songs array by matching title/artist or id
+    const matchedIndex = songs.findIndex(s => 
+      s.id === song.id || 
+      (s.title === song.title && s.artist === song.artist)
+    );
+    
+    if (matchedIndex >= 0) {
+      setCurrentIndex(matchedIndex);
+      setPlaying(true);
+      updateStats(matchedIndex);
+    }
+    setShowMoodPlayer(false);
+  };
+
   return (
     <div className={`app ${theme === 'dark' ? '' : theme + '-theme'}`}>
       <header>
@@ -156,6 +174,30 @@ export default function App() {
           </div>
           <div className="header-content">
             <SearchBar onChange={setFilter}/>
+            <button 
+              className="mood-btn"
+              onClick={() => setShowMoodPlayer(true)}
+              style={{
+                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '0.5rem 1rem',
+                color: '#fff',
+                fontWeight: '600',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: '0.9rem',
+                transition: 'all 0.2s',
+                boxShadow: '0 2px 8px rgba(99, 102, 241, 0.3)'
+              }}
+              onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+              title="Play music based on your mood using AI emotion detection"
+            >
+              🎭 Music from Mood
+            </button>
             <div className="theme-switcher">
               {['dark', 'ocean', 'purple', 'red', 'cyberpunk'].map(t => (
                 <button 
@@ -239,6 +281,14 @@ export default function App() {
         onFavorite={toggleFavorite}
         isFavorite={currentIndex !== null && favorites.includes(songs[currentIndex]?.id)}
       />
+
+      {/* Mood-based music player modal */}
+      {showMoodPlayer && (
+        <MoodPlayer 
+          onSongSelect={handleMoodSongSelect}
+          onClose={() => setShowMoodPlayer(false)}
+        />
+      )}
     </div>
   );
 }
