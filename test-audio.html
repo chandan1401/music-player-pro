@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Test</title>
+</head>
+<body>
+    <h1>Audio Test</h1>
+    <audio id="testAudio" controls crossorigin="anonymous">
+        <source src="http://localhost:4000/media/songs/Blue%20(Yung%20Kai)-(SambalpuriStar.In).mp3" type="audio/mpeg">
+    </audio>
+    <br><br>
+    <button onclick="playAudio()">Play with JavaScript</button>
+    <div id="status"></div>
+    
+    <script>
+        const audio = document.getElementById('testAudio');
+        const status = document.getElementById('status');
+        
+        audio.addEventListener('loadeddata', () => {
+            status.innerHTML += '<p style="color: green;">Audio loaded successfully!</p>';
+        });
+        
+        audio.addEventListener('error', (e) => {
+            status.innerHTML += `<p style="color: red;">Error loading audio: ${audio.error.message}</p>`;
+        });
+        
+        function playAudio() {
+            audio.play().then(() => {
+                status.innerHTML += '<p style="color: green;">Playing...</p>';
+            }).catch(err => {
+                status.innerHTML += `<p style="color: red;">Play error: ${err}</p>`;
+            });
+        }
+        
+        // Test fetch
+        fetch('http://localhost:4000/media/songs/Blue%20(Yung%20Kai)-(SambalpuriStar.In).mp3', {
+            method: 'HEAD'
+        }).then(response => {
+            status.innerHTML += `<p>Fetch test: ${response.ok ? 'OK' : 'Failed'} (Status: ${response.status})</p>`;
+        }).catch(err => {
+            status.innerHTML += `<p style="color: red;">Fetch error: ${err}</p>`;
+        });
+    </script>
+</body>
+</html>

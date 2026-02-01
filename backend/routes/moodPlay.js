@@ -10,6 +10,7 @@ const path = require('path');
 // Load songs and moods data
 const SONGS_FILE = path.join(__dirname, '..', 'songs.json');
 const MOODS_FILE = path.join(__dirname, '..', 'data', 'moods.json');
+const MOOD_PLAYLISTS_FILE = path.join(__dirname, '..', 'data', 'moodPlaylists.json');
 
 function loadJson(file) {
   try {
@@ -55,33 +56,46 @@ router.post('/', (req, res) => {
     return res.status(404).json({ error: 'No songs available' });
   }
   
-  // Load moods mapping
-  const moods = loadJson(MOODS_FILE);
+  // Load mood playlists (preferred method)
+  const moodPlaylists = loadJson(MOOD_PLAYLISTS_FILE);
   
   let candidates = [];
+  let playlistUsed = null;
   
-  if (moods) {
-    // Find songs that match the requested mood
-    candidates = Object.entries(moods)
-      .filter(([songId, moodList]) => {
-        return Array.isArray(moodList) && moodList.includes(normalizedMood);
-      })
-      .map(([songId]) => songs.find(s => String(s.id) === songId))
+  if (moodPlaylists && moodPlaylists[normalizedMood]) {
+    // Use the mood playlist
+    const playlist = moodPlaylists[normalizedMood];
+    playlistUsed = playlist.name;
+    
+    candidates = playlist.songIds
+      .map(songId => songs.find(s => s.id === songId))
       .filter(Boolean);
-  }
-  
-  // Fallback to random song if no mood matches
-  let chosen;
-  if (candidates.length > 0) {
-    chosen = candidates[Math.floor(Math.random() * candidates.length)];
+    
+    console.log(`Mood: ${normalizedMood}, Playlist: ${playlistUsed}, Songs: ${candidates.length}`);
   } else {
-    // Fallback: pick random song
-    chosen = songs[Math.floor(Math.random() * songs.length)];
+    // Fallback to old moods mapping
+    const moods = loadJson(MOODS_FILE);
+    
+    if (moods) {
+      candidates = Object.entries(moods)
+        .filter(([songId, moodList]) => {
+          return Array.isArray(moodList) && moodList.includes(normalizedMood);
+        })
+        .map(([songId]) => songs.find(s => String(s.id) === songId))
+        .filter(Boolean);
+    }
   }
   
-  if (!chosen) {
-    return res.status(404).json({ error: 'No songs available' });
+  // If no songs mapped to this mood, return an empty result instead of a random fallback
+  if (candidates.length === 0) {
+    return res.status(404).json({ 
+      error: 'No songs available for this mood',
+      requestedMood: normalizedMood
+    });
   }
+
+  // Pick one song from the mood-specific candidates
+  const chosen = candidates[Math.floor(Math.random() * candidates.length)];
   
   // Build full URLs for the song
   const baseUrl = `http://localhost:${process.env.PORT || 4000}/media`;
@@ -94,13 +108,50 @@ router.post('/', (req, res) => {
       url: `${baseUrl}/${chosen.path}`,
       cover: chosen.cover ? `${baseUrl}/${chosen.cover}` : null,
       genre: chosen.genre || null,
-      duration: chosen.duration || null
+      duration: chosen.duration || null,
+      path: chosen.path
     },
     requestedMood: normalizedMood,
-    totalCandidates: candidates.length
+    totalCandidates: candidates.length,
+    playlistUsed: playlistUsed || 'fallback'
   };
   
   return res.json(response);
+});
+
+/**
+ * GET /api/mood-play/playlists
+ * Returns all available mood playlists
+ */
+router.get('/playlists', (req, res) => {
+  const moodPlaylists = loadJson(MOOD_PLAYLISTS_FILE);
+  
+  if (!moodPlaylists) {
+    return res.status(500).json({ error: 'Failed to load mood playlists' });
+  }
+  
+  const songsData = loadJson(SONGS_FILE);
+  const songs = songsData?.songs || songsData || [];
+  
+  // Enrich playlists with song details
+  const enrichedPlaylists = {};
+  
+  Object.entries(moodPlaylists).forEach(([mood, playlist]) => {
+    enrichedPlaylists[mood] = {
+      ...playlist,
+      songs: playlist.songIds
+        .map(songId => songs.find(s => s.id === songId))
+        .filter(Boolean)
+        .map(song => ({
+          id: song.id,
+          title: song.title,
+          artist: song.artist,
+          genre: song.genre
+        }))
+    };
+  });
+  
+  return res.json({ playlists: enrichedPlaylists });
 });
 
 module.exports = router;

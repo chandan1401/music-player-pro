@@ -29,7 +29,7 @@ export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelec
     });
     
     // Fetch user-created playlists and merge
-    fetch('http://localhost:4000/api/playlists')
+    fetch(`/api/playlists`)
       .then(r => r.json())
       .then(data => {
         const payload = Array.isArray(data) ? data : data.playlists || [];
@@ -50,7 +50,7 @@ export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelec
       {lists.map(l => {
         const playlistSongs = songs.filter(s => (l.songIds || []).includes(s.id));
         const coverImage = playlistSongs.length > 0 
-          ? `http://localhost:4000/media/${playlistSongs[0].cover}` 
+          ? `/media/${playlistSongs[0].cover}` 
           : null;
         
         return (

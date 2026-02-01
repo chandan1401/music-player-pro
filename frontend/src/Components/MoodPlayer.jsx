@@ -20,7 +20,7 @@ export default function MoodPlayer({ onSongSelect, onClose }) {
 
   // Emotion API endpoint
   const EMOTION_API = 'http://localhost:5001/api/detect-mood';
-  const MOOD_PLAY_API = 'http://localhost:4000/api/mood-play';
+  const MOOD_PLAY_API = `/api/mood-play`;
 
   // Cleanup camera on unmount
   useEffect(() => {
@@ -33,6 +33,13 @@ export default function MoodPlayer({ onSongSelect, onClose }) {
     try {
       setCameraError(null);
       setStatusMessage('Requesting camera access...');
+      
+      // Check if mediaDevices API is available (requires secure context: HTTPS or localhost)
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error(
+          '⚠️ Camera API unavailable. Please use: https://localhost:3000'
+        );
+      }
       
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { 
@@ -53,12 +60,26 @@ export default function MoodPlayer({ onSongSelect, onClose }) {
       setStatusMessage('Camera ready! Click "Detect My Mood" when ready.');
     } catch (err) {
       console.error('Camera error:', err);
-      setCameraError(
-        err.name === 'NotAllowedError' 
-          ? 'Camera access denied. Please allow camera permission and try again.'
-          : 'Failed to access camera. Please ensure a camera is connected.'
-      );
-      setStatusMessage('Camera error');
+      let errorMessage;
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorMessage = '🚫 Camera access DENIED by browser.\n\n' +
+          '✅ HOW TO FIX:\n' +
+          '1. Click the 🔒 or ⓘ icon in address bar\n' +
+          '2. Find "Camera" permissions\n' +
+          '3. Select "Allow"\n' +
+          '4. Refresh page (F5) and try again\n\n' +
+          '⚠️ Make sure you\'re using: https://localhost:3001';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorMessage = '📷 No camera found. Please connect a camera/webcam.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errorMessage = '⚠️ Camera is being used by another application. Close other apps using camera.';
+      } else if (err.message && err.message.includes('Camera API')) {
+        errorMessage = err.message;
+      } else {
+        errorMessage = `❌ Camera error: ${err.message || 'Unknown error'}\n\nMake sure:\n• Using https://localhost:3001\n• Camera permissions allowed\n• No other app using camera`;
+      }
+      setCameraError(errorMessage);
+      setStatusMessage('Camera error - see instructions above');
     }
   };
 
@@ -281,6 +302,44 @@ export default function MoodPlayer({ onSongSelect, onClose }) {
             )}
           </div>
 
+          {/* Manual Mood Selection */}
+          <div style={styles.manualSection}>
+            <p style={{ margin: '0.5rem 0', fontSize: '0.9rem', opacity: 0.7 }}>
+              <strong>Or select your mood manually:</strong>
+            </p>
+            <div style={styles.moodButtons}>
+              {['happy', 'sad', 'angry', 'neutral', 'surprise', 'fear'].map(mood => (
+                <button
+                  key={mood}
+                  onClick={async () => {
+                    setStatusMessage(`Finding a ${mood} song...`);
+                    try {
+                      const songResponse = await fetch(MOOD_PLAY_API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mood }),
+                      });
+                      const songResult = await songResponse.json();
+                      if (songResult.error || !songResult.song) {
+                        throw new Error(songResult.error || 'No song found');
+                      }
+                      setDetectedMood(mood);
+                      setStatusMessage(`Playing: ${songResult.song.title}`);
+                      stopCamera();
+                      if (onSongSelect) onSongSelect(songResult.song);
+                    } catch (err) {
+                      setStatusMessage(`Error: ${err.message}`);
+                    }
+                  }}
+                  style={styles.moodBtn}
+                  disabled={detecting}
+                >
+                  {getMoodEmoji(mood)} {mood}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Instructions */}
           <div style={styles.instructions}>
             <p><strong>How it works:</strong></p>
@@ -304,7 +363,8 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    backgroundColor: 'rgba(61, 41, 20, 0.75)',
+    backdropFilter: 'blur(8px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -312,36 +372,42 @@ const styles = {
     padding: '1rem'
   },
   modal: {
-    backgroundColor: '#1a1a2e',
-    borderRadius: '16px',
+    background: 'linear-gradient(135deg, rgba(244, 228, 188, 0.95) 0%, rgba(232, 213, 163, 0.95) 100%)',
+    borderRadius: '20px',
     width: '100%',
     maxWidth: '500px',
     maxHeight: '90vh',
     overflow: 'auto',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
+    boxShadow: '0 20px 60px rgba(61, 41, 20, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)',
+    border: '1px solid rgba(184, 134, 11, 0.3)',
+    backdropFilter: 'blur(20px)'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '1rem 1.5rem',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+    borderBottom: '2px solid rgba(184, 134, 11, 0.2)',
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%)'
   },
   title: {
     margin: 0,
     fontSize: '1.5rem',
-    color: '#fff'
+    color: '#3d2914',
+    fontFamily: 'Cinzel, serif',
+    fontWeight: '600'
   },
   closeBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#fff',
-    fontSize: '2rem',
+    background: 'rgba(61, 41, 20, 0.1)',
+    border: '1px solid rgba(184, 134, 11, 0.3)',
+    color: '#3d2914',
+    fontSize: '1.5rem',
     cursor: 'pointer',
-    padding: '0',
+    padding: '4px 10px',
+    borderRadius: '8px',
     lineHeight: 1,
-    opacity: 0.7,
-    transition: 'opacity 0.2s'
+    opacity: 0.8,
+    transition: 'all 0.2s'
   },
   content: {
     padding: '1.5rem'
@@ -350,10 +416,12 @@ const styles = {
     position: 'relative',
     width: '100%',
     aspectRatio: '4/3',
-    backgroundColor: '#0d0d1a',
+    backgroundColor: '#2d1e0f',
     borderRadius: '12px',
     overflow: 'hidden',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    border: '2px solid rgba(184, 134, 11, 0.3)',
+    boxShadow: 'inset 0 4px 20px rgba(0, 0, 0, 0.3)'
   },
   video: {
     width: '100%',
@@ -370,7 +438,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'rgba(255, 255, 255, 0.5)'
+    color: 'rgba(244, 228, 188, 0.5)'
   },
   countdown: {
     position: 'absolute',
@@ -379,7 +447,7 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     fontSize: '6rem',
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#f4e4bc',
     textShadow: '0 0 20px rgba(0, 0, 0, 0.8)'
   },
   moodBadge: {
@@ -387,33 +455,36 @@ const styles = {
     bottom: '1rem',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    color: '#fff',
+    backgroundColor: 'rgba(61, 41, 20, 0.85)',
+    color: '#f4e4bc',
     padding: '0.5rem 1rem',
     borderRadius: '20px',
     fontSize: '1.2rem',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem'
+    gap: '0.5rem',
+    border: '1px solid rgba(184, 134, 11, 0.4)'
   },
   confidence: {
     fontSize: '0.9rem',
     opacity: 0.8
   },
   error: {
-    backgroundColor: 'rgba(255, 59, 48, 0.2)',
-    color: '#ff3b30',
+    backgroundColor: 'rgba(180, 60, 40, 0.15)',
+    color: '#8b3020',
     padding: '0.75rem 1rem',
     borderRadius: '8px',
     marginBottom: '1rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    border: '1px solid rgba(180, 60, 40, 0.3)'
   },
   status: {
     textAlign: 'center',
-    color: '#fff',
+    color: '#3d2914',
     marginBottom: '1rem',
     fontSize: '1rem',
-    minHeight: '1.5em'
+    minHeight: '1.5em',
+    fontFamily: 'Cormorant Garamond, serif'
   },
   controls: {
     display: 'flex',
@@ -422,34 +493,65 @@ const styles = {
     marginBottom: '1.5rem'
   },
   primaryBtn: {
-    backgroundColor: '#6366f1',
-    color: '#fff',
-    border: 'none',
+    background: 'linear-gradient(135deg, rgba(184, 134, 11, 0.9) 0%, rgba(218, 165, 32, 0.9) 100%)',
+    color: '#fff8e7',
+    border: '1px solid rgba(218, 165, 32, 0.6)',
     padding: '0.75rem 1.5rem',
-    borderRadius: '8px',
+    borderRadius: '12px',
     fontSize: '1rem',
     fontWeight: '600',
     cursor: 'pointer',
     transition: 'all 0.2s',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem'
+    gap: '0.5rem',
+    boxShadow: '0 4px 15px rgba(184, 134, 11, 0.3)',
+    fontFamily: 'Cormorant Garamond, serif'
   },
   secondaryBtn: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    color: '#fff',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)',
+    color: '#3d2914',
+    border: '1px solid rgba(184, 134, 11, 0.3)',
     padding: '0.75rem 1.5rem',
-    borderRadius: '8px',
+    borderRadius: '12px',
     fontSize: '1rem',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 0.2s',
+    backdropFilter: 'blur(8px)',
+    fontFamily: 'Cormorant Garamond, serif'
   },
   instructions: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: '8px',
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%)',
+    borderRadius: '12px',
     padding: '1rem',
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: '0.9rem'
+    color: '#5c4033',
+    fontSize: '0.9rem',
+    border: '1px solid rgba(184, 134, 11, 0.2)',
+    backdropFilter: 'blur(8px)'
+  },
+  manualSection: {
+    marginBottom: '1.5rem',
+    textAlign: 'center',
+    color: '#5c4033'
+  },
+  moodButtons: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '0.5rem',
+    marginTop: '0.75rem'
+  },
+  moodBtn: {
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%)',
+    color: '#3d2914',
+    border: '1px solid rgba(184, 134, 11, 0.3)',
+    padding: '0.75rem 0.5rem',
+    borderRadius: '10px',
+    fontSize: '0.85rem',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+    textTransform: 'capitalize',
+    backdropFilter: 'blur(8px)',
+    fontFamily: 'Cormorant Garamond, serif',
+    fontWeight: '600'
   }
 };

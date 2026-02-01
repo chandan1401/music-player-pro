@@ -6,35 +6,36 @@ const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const app = express();
+const server = http.createServer(app);
 
-// CORS - Allow specific origins, limited methods
-const ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:5001'];
+// CORS - Allow all origins for local network access
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (direct browser requests for media)
-    // or from allowed origins
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS policy: Access denied'));
-    }
-  },
-  methods: ['GET', 'POST'],  // Allow GET and POST for mood-play endpoint
-  credentials: false,  // No credentials allowed
-  maxAge: 600,  // Cache preflight for 10 minutes
+  origin: true,  // Allow all origins
+  methods: ['GET', 'POST'],
+  credentials: false,
+  maxAge: 600,
   optionsSuccessStatus: 204
 }));
 
-// Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      mediaSrc: ["'self'", 'http://localhost:3000']
-    }
+// Socket.IO setup for real-time jam sessions
+const io = new Server(server, {
+  cors: {
+    origin: "*",  // Allow all origins
+    methods: ['GET', 'POST']
   }
+});
+
+// Log server's network address
+console.log('Network IP: 192.168.1.11');
+
+// Security headers - disabled CSP to allow audio playback
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 app.use(compression());
@@ -68,6 +69,10 @@ app.use((req, res, next) => {
 app.use('/media', express.static(path.join(__dirname, 'public'), {
   setHeaders: (res) => {
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Range');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
   }
 }));
 
@@ -115,6 +120,17 @@ app.get('/api/playlists', (req, res, next) => {
 const moodPlayRouter = require('./routes/moodPlay');
 app.use('/api/mood-play', moodPlayRouter);
 
+// Jam session endpoints (allows POST for session creation)
+const { router: jamSessionRouter, setupSocketHandlers } = require('./routes/jamSession');
+app.use('/api/jam', jamSessionRouter);
+
+// Lyrics proxy endpoint (avoids CORS issues)
+const lyricsRouter = require('./routes/lyrics');
+app.use('/api/lyrics', lyricsRouter);
+
+// Setup Socket.IO handlers for real-time communication
+setupSocketHandlers(io);
+
 // SECURITY: ALL OTHER WRITE OPERATIONS DISABLED
 // Reject any POST, PUT, PATCH, DELETE requests (except mood-play which is handled above)
 app.use((req, res, next) => {
@@ -144,4 +160,8 @@ app.use((err, _req, res, _next) => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`API running on http://localhost:${PORT}`);
+  console.log(`Network access: http://192.168.1.11:${PORT}`);
+  console.log(`WebSocket server ready for jam sessions`);
+});

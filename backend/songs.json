@@ -151,6 +151,306 @@
       "path": "songs/Best of KK/Soniye (PenduJatt.Com.Se).mp3",
       "cover": "images/Best of KK/Soniye.jpg",
       "duration": 230
+    },
+    {
+      "id": 17,
+      "title": "Afghan Jalebi",
+      "artist": "Phantom",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Afghan Jalebi Ya Baba Phantom 320 Kbps.mp3",
+      "cover": "images/Happy Songs/afghan-jalebi.jpg",
+      "duration": 240
+    },
+    {
+      "id": 18,
+      "title": "Char Baj Gaye",
+      "artist": "F.A.L.T.U",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Char Baj Gaye Party Abhi Baaki Hai F.a.l.t.u 320 Kbps.mp3",
+      "cover": "images/Happy Songs/char-baj-gaye.jpg",
+      "duration": 210
+    },
+    {
+      "id": 19,
+      "title": "Daru Badnaam Remix",
+      "artist": "Kamal Kahlon",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Daru Badnaam Remix - Kamal Kahlon.mp3",
+      "cover": "images/Happy Songs/daru-badnaam.jpg",
+      "duration": 200
+    },
+    {
+      "id": 20,
+      "title": "Hookah Bar",
+      "artist": "Khiladi 786",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Hookah Bar Khiladi 786 320 Kbps.mp3",
+      "cover": "images/Happy Songs/hookah-bar.jpg",
+      "duration": 220
+    },
+    {
+      "id": 21,
+      "title": "Kabhi Kabhi Aditi",
+      "artist": "Jaane Tu Ya Jaane Na",
+      "genre": "romantic",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Kabhi Kabhi Aditi Zindagi Jaane Tu.. Ya Jaane Na 320 Kbps.mp3",
+      "cover": "images/Happy Songs/kabhi-kabhi-aditi.jpg",
+      "duration": 260
+    },
+    {
+      "id": 22,
+      "title": "Kya Baat Ay",
+      "artist": "Harrdy Sandhu",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Kya Baat Ay Harrdy Sandhu 320 Kbps.mp3",
+      "cover": "images/Happy Songs/kya-baat-ay.jpg",
+      "duration": 200
+    },
+    {
+      "id": 23,
+      "title": "Masakali",
+      "artist": "Delhi 6",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Masakali Delhi 6 320 Kbps.mp3",
+      "cover": "images/Happy Songs/masakali.jpg",
+      "duration": 230
+    },
+    {
+      "id": 24,
+      "title": "Matargashti",
+      "artist": "Tamasha",
+      "genre": "romantic",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Matargashti Tamasha 128 Kbps.mp3",
+      "cover": "images/Happy Songs/matargashti.jpg",
+      "duration": 250
+    },
+    {
+      "id": 25,
+      "title": "Milegi Milegi",
+      "artist": "Stree",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Milegi Milegi Stree 320 Kbps.mp3",
+      "cover": "images/Happy Songs/milegi-milegi.jpg",
+      "duration": 215
+    },
+    {
+      "id": 26,
+      "title": "Suit",
+      "artist": "Guru Randhawa",
+      "genre": "pop",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Suit Guru Randhawa 320 Kbps.mp3",
+      "cover": "images/Happy Songs/suit.jpg",
+      "duration": 195
+    },
+    {
+      "id": 27,
+      "title": "Tumse Hi",
+      "artist": "Anjaana Anjaani",
+      "genre": "romantic",
+      "playlist": "Happy Songs",
+      "path": "songs/Happy Songs/Tumse Hi Tumse Ab Se Koi Khushi Nahi V1 Anjaana Anjaani 128 Kbps.mp3",
+      "cover": "images/Happy Songs/tumse-hi.jpg",
+      "duration": 245
+    },
+    {
+      "id": 28,
+      "title": "Aadat",
+      "artist": "Kalyug",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Aadat Kalyug 320 Kbps.mp3",
+      "cover": "images/Sad Songs/aadat.jpg",
+      "duration": 270
+    },
+    {
+      "id": 29,
+      "title": "Andaaz-e-Karam",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Andaaz_e_Karam.mp3",
+      "cover": "images/Sad Songs/andaaz-e-karam.jpg",
+      "duration": 260
+    },
+    {
+      "id": 30,
+      "title": "Barbaad",
+      "artist": "Saiyaara",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Barbaad Saiyaara 320 Kbps.mp3",
+      "cover": "images/Sad Songs/barbaad.jpg",
+      "duration": 250
+    },
+    {
+      "id": 31,
+      "title": "Galliyan",
+      "artist": "Ek Villain",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Galliyan Ek Villain 320 Kbps.mp3",
+      "cover": "images/Sad Songs/galliyan.jpg",
+      "duration": 265
+    },
+    {
+      "id": 32,
+      "title": "Hamari Adhuri Kahani",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Hamari Adhuri Kahani - Hamari Adhuri Kahani 320 Kbps.mp3",
+      "cover": "images/Sad Songs/hamari-adhuri-kahani.jpg",
+      "duration": 280
+    },
+    {
+      "id": 33,
+      "title": "Sanam Teri Kasam",
+      "artist": "Ankit Tiwari",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Sanam Teri Kasam Ankit Tiwari 320 Kbps.mp3",
+      "cover": "images/Sad Songs/sanam-teri-kasam.jpg",
+      "duration": 255
+    },
+    {
+      "id": 34,
+      "title": "Sitaare",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Sitaare (PenduJatt.Com.Se).mp3",
+      "cover": "images/Sad Songs/sitaare.jpg",
+      "duration": 240
+    },
+    {
+      "id": 35,
+      "title": "Tere Bin",
+      "artist": "Simmba",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Tere Bin Simmba 320 Kbps.mp3",
+      "cover": "images/Sad Songs/tere-bin.jpg",
+      "duration": 245
+    },
+    {
+      "id": 36,
+      "title": "Tum Hi Aana",
+      "artist": "Marjaavaan",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Tum Hi Aana Marjaavaan 320 Kbps.mp3",
+      "cover": "images/Sad Songs/tum-hi-aana.jpg",
+      "duration": 235
+    },
+    {
+      "id": 37,
+      "title": "Tum Hi Ho",
+      "artist": "Aashiqui 2",
+      "genre": "romantic",
+      "playlist": "Sad Songs",
+      "path": "songs/Sad Songs/Tum Hi Ho Aashiqui 2 320 Kbps.mp3",
+      "cover": "images/Sad Songs/tum-hi-ho.jpg",
+      "duration": 260
+    },
+    {
+      "id": 38,
+      "title": "Get Ready To Fight",
+      "artist": "Baaghi 4",
+      "genre": "rock",
+      "playlist": "Angry Songs",
+      "path": "songs/Angry Songs/Get Ready To Fight Khauf Hai Baaghi 4 320 Kbps.mp3",
+      "cover": "images/Angry Songs/get-ready-to-fight.jpg",
+      "duration": 220
+    },
+    {
+      "id": 39,
+      "title": "Kaam 25",
+      "artist": "Various Artists",
+      "genre": "pop",
+      "playlist": "Angry Songs",
+      "path": "songs/Angry Songs/Kaam 25 (PenduJatt.Com.Se).mp3",
+      "cover": "images/Angry Songs/kaam-25.jpg",
+      "duration": 200
+    },
+    {
+      "id": 40,
+      "title": "Lakshya",
+      "artist": "Shankar Mahadevan",
+      "genre": "motivational",
+      "playlist": "Angry Songs",
+      "path": "songs/Angry Songs/Lakshya Shankar Mahadevan 320 Kbps.mp3",
+      "cover": "images/Angry Songs/lakshya.jpg",
+      "duration": 230
+    },
+    {
+      "id": 41,
+      "title": "Saadda Haq",
+      "artist": "Rockstar",
+      "genre": "rock",
+      "playlist": "Angry Songs",
+      "path": "songs/Angry Songs/Saadda Haq Featuring Orianthi Panagaris On Guitars Rockstar 320 Kbps.mp3",
+      "cover": "images/Angry Songs/saadda-haq.jpg",
+      "duration": 240
+    },
+    {
+      "id": 42,
+      "title": "Kaho Na",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "playlist": "Neutral Songs",
+      "path": "songs/Neutral Songs/Kaho Na Kahowith Dialogue 320 Kbps.mp3",
+      "cover": "images/Neutral Songs/kaho-na.jpg",
+      "duration": 225
+    },
+    {
+      "id": 43,
+      "title": "Maiyya Mainu",
+      "artist": "Various Artists",
+      "genre": "devotional",
+      "playlist": "Neutral Songs",
+      "path": "songs/Neutral Songs/Maiyya Mainu-(PagalWorlds.Com.Se).mp3",
+      "cover": "images/Neutral Songs/maiyya-mainu.jpg",
+      "duration": 210
+    },
+    {
+      "id": 44,
+      "title": "Pardesiya",
+      "artist": "Param Sundari",
+      "genre": "pop",
+      "playlist": "Neutral Songs",
+      "path": "songs/Neutral Songs/Pardesiya Param Sundari 320 Kbps.mp3",
+      "cover": "images/Neutral Songs/pardesiya.jpg",
+      "duration": 200
+    },
+    {
+      "id": 45,
+      "title": "Subhanallah",
+      "artist": "Yeh Jawaani Hai Deewani",
+      "genre": "romantic",
+      "playlist": "Neutral Songs",
+      "path": "songs/Neutral Songs/Subhanallah Yeh Jawaani Hai Deewani 320 Kbps.mp3",
+      "cover": "images/Neutral Songs/subhanallah.jpg",
+      "duration": 240
+    },
+    {
+      "id": 46,
+      "title": "Teri Jhuki Nazar",
+      "artist": "Murder 3",
+      "genre": "romantic",
+      "playlist": "Neutral Songs",
+      "path": "songs/Neutral Songs/Teri Jhuki Nazar Murder 3 320 Kbps.mp3",
+      "cover": "images/Neutral Songs/teri-jhuki-nazar.jpg",
+      "duration": 230
     }
   ]
 }

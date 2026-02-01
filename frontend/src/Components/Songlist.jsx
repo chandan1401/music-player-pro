@@ -1,11 +1,11 @@
 import React from "react";
 
-const SongList = ({ songs, onPlay, currentIndex, favorites = [], onFavorite }) => {
+const SongList = ({ songs, onPlay, currentSongId, favorites = [], onFavorite }) => {
   return (
     <div className="song-list">
       {songs.map((song, index) => (
         <div
-          className={`song-card ${currentIndex === index ? 'active' : ''} ${favorites.includes(song.id) ? 'favorited' : ''}`}
+          className={`song-card ${currentSongId === song.id ? 'active' : ''} ${favorites.includes(song.id) ? 'favorited' : ''}`}
           key={song.id}
         >
           <div className="song-card-overlay">
@@ -21,7 +21,7 @@ const SongList = ({ songs, onPlay, currentIndex, favorites = [], onFavorite }) =
             </button>
           </div>
           <img 
-            src={'http://localhost:4000/media/' + song.cover} 
+            src={`/media/${song.cover}`} 
             alt={song.title}
             onClick={() => onPlay(index)}
           />
