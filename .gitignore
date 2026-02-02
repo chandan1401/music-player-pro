@@ -6,8 +6,5 @@ dist/
 .vscode/
 .idea/
 
-# Large media files (over 100MB)
-backend/public/songs/*.mp3
-backend/public/images/*.jpg
-backend/public/images/*.png
-backend/public/images/*.jpeg
+# Media files are needed for deployment - NOT ignoring them
+# Note: If repo gets too large, consider using external storage (S3, Cloudinary)
