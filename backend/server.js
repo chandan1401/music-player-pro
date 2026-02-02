@@ -42,13 +42,13 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '1kb' }));  // Limit payload size
 
-// Rate limiting middleware
+// Rate limiting middleware - relaxed for production
 const requestCounts = new Map();
 app.use((req, res, next) => {
-  const ip = req.ip;
+  const ip = req.ip || req.headers['x-forwarded-for'] || 'unknown';
   const now = Date.now();
   const windowMs = 60000; // 1 minute
-  const maxRequests = 100;
+  const maxRequests = 500; // Increased from 100 to 500
   
   if (!requestCounts.has(ip)) {
     requestCounts.set(ip, []);

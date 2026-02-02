@@ -40,9 +40,16 @@ export default function App() {
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/songs`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => {
-        const payload = data.songs || data || [];
+        const payload = Array.isArray(data) ? data : (Array.isArray(data?.songs) ? data.songs : []);
+        if (payload.length === 0) {
+          console.warn('No songs received from API');
+          return;
+        }
         setSongs(payload);
         setQueueOrder(prev => {
           const saved = prev && prev.length ? prev : [];
@@ -51,7 +58,7 @@ export default function App() {
           return [...sanitized, ...missing];
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error('Failed to fetch songs:', err));
     
     // Load favorites from localStorage
     const saved = localStorage.getItem('favorites');
