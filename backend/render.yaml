@@ -1,0 +1,17 @@
+# Backend Deployment Configuration
+# Deploy to Render.com (free tier)
+
+services:
+  - type: web
+    name: music-player-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000

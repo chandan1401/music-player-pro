@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { API_BASE_URL, SOCKET_URL } from '../config';
 
 export default function JamSession({ songs, onPlaySong, onBack }) {
   const [socket, setSocket] = useState(null);
@@ -76,8 +77,8 @@ export default function JamSession({ songs, onPlaySong, onBack }) {
 
   // Initialize socket connection
   useEffect(() => {
-    // Connect to backend through Vite proxy using current origin
-    const backendUrl = window.location.protocol === 'https:' ? 'http://localhost:4000' : 'http://localhost:4000';
+    // Connect to backend - use SOCKET_URL for production
+    const backendUrl = SOCKET_URL;
     
     console.log('Connecting to backend:', backendUrl);
     const newSocket = io(backendUrl);
@@ -115,7 +116,7 @@ export default function JamSession({ songs, onPlaySong, onBack }) {
       if (data.session.currentSong) {
         console.log('🎵 Song already playing, starting playback:', data.session.currentSong.song.title);
         const hostname = window.location.hostname;
-        const audioUrl = `/media/${data.session.currentSong.song.path}`;
+        const audioUrl = `${API_BASE_URL}/media/${data.session.currentSong.song.path}`;
         console.log('🎵 Audio URL:', audioUrl);
         
         audioRef.current.src = audioUrl;
@@ -157,7 +158,7 @@ export default function JamSession({ songs, onPlaySong, onBack }) {
       
       // Play in the jam session's audio player for ALL participants
       const hostname = window.location.hostname;
-      const audioUrl = `/media/${data.song.song.path}`;
+      const audioUrl = `${API_BASE_URL}/media/${data.song.song.path}`;
       console.log('🎵 Playing audio from:', audioUrl);
       
       // Stop current playback first
@@ -245,7 +246,7 @@ export default function JamSession({ songs, onPlaySong, onBack }) {
     }
 
     try {
-      const response = await fetch(`/api/jam/create`, {
+      const response = await fetch(`${API_BASE_URL}/api/jam/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hostName: inputName })

@@ -6,6 +6,7 @@ import SearchBar from './Components/SearchBar';
 import MoodPlayer from './Components/MoodPlayer';
 import JamSession from './Components/JamSession';
 import AnalyticsDashboard from './Components/AnalyticsDashboard';
+import { API_BASE_URL } from './config';
 
 const deriveMood = (song = {}) => {
   const normalizedPlaylist = (song.playlist || '').toLowerCase();
@@ -38,7 +39,7 @@ export default function App() {
   const [skipCounts, setSkipCounts] = useState({});
 
   useEffect(() => {
-    fetch(`/api/songs`)
+    fetch(`${API_BASE_URL}/api/songs`)
       .then(res => res.json())
       .then(data => {
         const payload = data.songs || data || [];

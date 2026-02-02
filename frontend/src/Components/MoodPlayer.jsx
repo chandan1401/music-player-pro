@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 /**
  * MoodPlayer Component
@@ -20,7 +21,7 @@ export default function MoodPlayer({ onSongSelect, onClose }) {
 
   // Emotion API endpoint
   const EMOTION_API = 'http://localhost:5001/api/detect-mood';
-  const MOOD_PLAY_API = `/api/mood-play`;
+  const MOOD_PLAY_API = `${API_BASE_URL}/api/mood-play`;
 
   // Cleanup camera on unmount
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../config';
 
 export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelectPlaylist }) {
   const [lists, setLists] = useState([]);
@@ -29,7 +30,7 @@ export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelec
     });
     
     // Fetch user-created playlists and merge
-    fetch(`/api/playlists`)
+    fetch(`${API_BASE_URL}/api/playlists`)
       .then(r => r.json())
       .then(data => {
         const payload = Array.isArray(data) ? data : data.playlists || [];
@@ -50,7 +51,7 @@ export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelec
       {lists.map(l => {
         const playlistSongs = songs.filter(s => (l.songIds || []).includes(s.id));
         const coverImage = playlistSongs.length > 0 
-          ? `/media/${playlistSongs[0].cover}` 
+          ? `${API_BASE_URL}/media/${playlistSongs[0].cover}` 
           : null;
         
         return (

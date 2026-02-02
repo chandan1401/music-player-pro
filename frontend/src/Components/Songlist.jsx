@@ -1,4 +1,5 @@
 import React from "react";
+import { API_BASE_URL } from '../config';
 
 const SongList = ({ songs, onPlay, currentSongId, favorites = [], onFavorite }) => {
   return (
@@ -21,7 +22,7 @@ const SongList = ({ songs, onPlay, currentSongId, favorites = [], onFavorite }) 
             </button>
           </div>
           <img 
-            src={`/media/${song.cover}`} 
+            src={`${API_BASE_URL}/media/${song.cover}`} 
             alt={song.title}
             onClick={() => onPlay(index)}
           />

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { API_BASE_URL } from '../config';
 
 // Helper to properly encode song path for URL
 const encodeSongPath = (path) => {
@@ -130,7 +131,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const song = songs[lookupIndex];
     setLyricsStatus('loading');
     try {
-      const res = await fetch(`/api/lyrics/${encodeURIComponent(song.artist || 'Unknown')}/${encodeURIComponent(song.title || 'track')}`);
+      const res = await fetch(`${API_BASE_URL}/api/lyrics/${encodeURIComponent(song.artist || 'Unknown')}/${encodeURIComponent(song.title || 'track')}`);
       if (!res.ok) throw new Error('No lyrics');
       const data = await res.json();
       setLyrics(data.lyrics || 'Lyrics unavailable.');
@@ -151,7 +152,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const audio = getActiveAudio();
     const gain = getActiveGain();
     const encodedPath = encodeSongPath(songs[indexToLoad].path);
-    const fullUrl = `/media/${encodedPath}`;
+    const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
     console.log('Loading song:', songs[indexToLoad].title, 'URL:', fullUrl);
     audio.src = fullUrl;
     audio.playbackRate = playbackSpeed;
@@ -224,7 +225,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const now = ctx.currentTime + 0.02; // slight offset to avoid crackle
 
     const encodedPath = encodeSongPath(songs[nextIndex].path);
-    const fullUrl = `/media/${encodedPath}`;
+    const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
     console.log('Crossfading to:', songs[nextIndex].title, 'URL:', fullUrl);
     incomingAudio.src = fullUrl;
     incomingAudio.playbackRate = playbackSpeed;
@@ -391,7 +392,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
       <div className="player-main">
           <div className="album-cover-box">
             <img 
-              src={`/media/${songs[currentIndex].cover}`} 
+              src={`${API_BASE_URL}/media/${songs[currentIndex].cover}`} 
               alt="cover" 
               className={`album-cover ${playing ? 'playing' : ''}`}
               onError={(e) => {
