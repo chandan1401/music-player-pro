@@ -7,11 +7,11 @@ const isProd = import.meta.env.PROD;
 
 // IMPORTANT: Update this URL after deploying your backend to Render
 export const API_BASE_URL = isProd 
-  ? 'https://music-player-backend-xw9r.onrender.com'  // Will be updated after Render deployment
+  ? 'https://music-player-pro.onrender.com'  // Render backend URL
   : '';  // Empty string for dev (uses Vite proxy)
 
 export const SOCKET_URL = isProd
-  ? 'https://music-player-backend-xw9r.onrender.com'
+  ? 'https://music-player-pro.onrender.com'
   : 'http://localhost:4000';
 
 export const getApiUrl = (path) => `${API_BASE_URL}${path}`;
