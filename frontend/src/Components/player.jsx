@@ -10,6 +10,15 @@ const encodeSongPath = (path) => {
   return path.split('/').map(segment => encodeURIComponent(segment)).join('/');
 };
 
+// Helper to build full media URL
+const buildMediaUrl = (songPath) => {
+  if (!songPath) return '';
+  const encodedPath = encodeSongPath(songPath);
+  const url = `${API_BASE_URL}/media/${encodedPath}`;
+  console.log('Built media URL:', url);
+  return url;
+};
+
 export default function Player({ songs, currentIndex, setCurrentIndex, queueOrder = [], setQueueOrder = () => {}, currentSongId, playing, setPlaying, onFavorite, isFavorite, onSkip = () => {} }) {
   const audioRefs = useRef([new Audio(), new Audio()]);
   const activeIndexRef = useRef(0);
@@ -60,16 +69,13 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
 
     audioRefs.current.forEach((audioEl, idx) => {
       audioEl.preload = 'auto';
-      // Remove crossOrigin since we're using Vite proxy (same origin)
+      audioEl.crossOrigin = 'anonymous'; // Enable CORS for cross-origin audio
       
-      // Add error handler
+      // Add error handler - only log if src is not empty
       const onError = (e) => {
-        console.error(`Audio ${idx} error:`, audioEl.error?.message || 'Unknown error', audioEl.src);
-        console.error('Error details:', {
-          code: audioEl.error?.code,
-          message: audioEl.error?.message,
-          src: audioEl.src
-        });
+        if (audioEl.src && !audioEl.src.endsWith('/')) {
+          console.error(`Audio ${idx} error:`, audioEl.error?.message || 'Unknown error', audioEl.src);
+        }
       };
       audioEl.addEventListener('error', onError);
       
@@ -160,9 +166,12 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const ctx = audioCtxRef.current;
     const audio = getActiveAudio();
     const gain = getActiveGain();
-    const encodedPath = encodeSongPath(song.path);
-    const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
-    console.log('Loading song:', song.title, 'URL:', fullUrl, 'API_BASE_URL:', API_BASE_URL);
+    const fullUrl = buildMediaUrl(song.path);
+    if (!fullUrl || fullUrl.endsWith('/media/')) {
+      console.error('Invalid media URL generated:', fullUrl);
+      return;
+    }
+    console.log('Loading song:', song.title, 'URL:', fullUrl);
     audio.src = fullUrl;
     audio.playbackRate = playbackSpeed;
     audio.load();
@@ -227,7 +236,6 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     if (!ctx) return;
 
     cancelScheduledFades();
-    const hostname = window.location.hostname;
     const currentAudio = getActiveAudio();
     const incomingAudio = getInactiveAudio();
     const currentGain = getActiveGain();
@@ -238,9 +246,12 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const targetVolume = volume;
     const now = ctx.currentTime + 0.02; // slight offset to avoid crackle
 
-    const encodedPath = encodeSongPath(song.path);
-    const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
-    console.log('Crossfading to:', song.title, 'URL:', fullUrl, 'API_BASE_URL:', API_BASE_URL);
+    const fullUrl = buildMediaUrl(song.path);
+    if (!fullUrl || fullUrl.endsWith('/media/')) {
+      console.error('Crossfade: Invalid media URL:', fullUrl);
+      return;
+    }
+    console.log('Crossfading to:', song.title, 'URL:', fullUrl);
     incomingAudio.src = fullUrl;
     incomingAudio.playbackRate = playbackSpeed;
     incomingAudio.load();
