@@ -3,6 +3,10 @@ import { API_BASE_URL } from '../config';
 
 // Helper to properly encode song path for URL
 const encodeSongPath = (path) => {
+  if (!path) {
+    console.error('Song path is undefined or empty');
+    return '';
+  }
   return path.split('/').map(segment => encodeURIComponent(segment)).join('/');
 };
 
@@ -148,12 +152,17 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
 
   const primeActiveDeck = useCallback((indexToLoad, autoPlay = false) => {
     if (indexToLoad === null || !songs[indexToLoad]) return;
+    const song = songs[indexToLoad];
+    if (!song.path) {
+      console.error('Song has no path:', song);
+      return;
+    }
     const ctx = audioCtxRef.current;
     const audio = getActiveAudio();
     const gain = getActiveGain();
-    const encodedPath = encodeSongPath(songs[indexToLoad].path);
+    const encodedPath = encodeSongPath(song.path);
     const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
-    console.log('Loading song:', songs[indexToLoad].title, 'URL:', fullUrl);
+    console.log('Loading song:', song.title, 'URL:', fullUrl, 'API_BASE_URL:', API_BASE_URL);
     audio.src = fullUrl;
     audio.playbackRate = playbackSpeed;
     audio.load();
@@ -209,6 +218,11 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
 
   const performCrossfade = useCallback((nextIndex, reason = 'auto') => {
     if (nextIndex === null || nextIndex === undefined || !songs[nextIndex]) return;
+    const song = songs[nextIndex];
+    if (!song.path) {
+      console.error('Crossfade: Song has no path:', song);
+      return;
+    }
     const ctx = audioCtxRef.current;
     if (!ctx) return;
 
@@ -224,9 +238,9 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
     const targetVolume = volume;
     const now = ctx.currentTime + 0.02; // slight offset to avoid crackle
 
-    const encodedPath = encodeSongPath(songs[nextIndex].path);
+    const encodedPath = encodeSongPath(song.path);
     const fullUrl = `${API_BASE_URL}/media/${encodedPath}`;
-    console.log('Crossfading to:', songs[nextIndex].title, 'URL:', fullUrl);
+    console.log('Crossfading to:', song.title, 'URL:', fullUrl, 'API_BASE_URL:', API_BASE_URL);
     incomingAudio.src = fullUrl;
     incomingAudio.playbackRate = playbackSpeed;
     incomingAudio.load();
