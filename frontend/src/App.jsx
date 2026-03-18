@@ -31,6 +31,7 @@ export default function App() {
   const [activePlaylist, setActivePlaylist] = useState(null);
   const [showMoodPlayer, setShowMoodPlayer] = useState(false);
   const [showJamSession, setShowJamSession] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [queueOrder, setQueueOrder] = useState([]);
   const [playCounts, setPlayCounts] = useState({});
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
@@ -117,6 +118,17 @@ export default function App() {
   useEffect(() => {
     try { localStorage.setItem('skipCounts', JSON.stringify(skipCounts)); } catch (e) {}
   }, [skipCounts]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // keep queue in sync when songs list changes
   useEffect(() => {
@@ -279,6 +291,16 @@ export default function App() {
     >
       <header>
         <div className="header-inner">
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-label="Toggle sidebar"
+            aria-expanded={sidebarOpen}
+            onClick={() => setSidebarOpen(prev => !prev)}
+          >
+            ☰
+          </button>
+
           {activePlaylist && (
             <button 
               className="back-btn"
@@ -431,7 +453,7 @@ export default function App() {
             onFavorite={toggleFavorite}
           />
 
-          <aside>
+          <aside className={`app-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <PlaylistManager 
               songs={songs} 
               onPlay={playSongAt}
@@ -489,6 +511,15 @@ export default function App() {
               }}
             />
           </aside>
+
+          {sidebarOpen && (
+            <button
+              type="button"
+              className="sidebar-backdrop"
+              aria-label="Close sidebar"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
         </main>
       )}
 

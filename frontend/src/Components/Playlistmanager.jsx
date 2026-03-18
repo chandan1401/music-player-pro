@@ -62,7 +62,7 @@ export default function PlaylistManager({ songs, onPlay, activePlaylist, onSelec
           >
             {coverImage && (
               <div className="playlist-card-cover">
-                <img src={coverImage} alt={l.name} />
+                <img src={coverImage} alt={l.name} loading="lazy" decoding="async" />
               </div>
             )}
             <div className="playlist-card-info">

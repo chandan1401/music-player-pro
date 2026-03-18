@@ -435,6 +435,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
               <button 
                 onClick={handlePrev}
                 className="control-btn prev-btn"
+                aria-label="Previous song"
                 title="Previous song"
               >
                 ⏮️
@@ -443,6 +444,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
               <button 
                 onClick={() => setPlaying(!playing)} 
                 className="play-btn"
+                aria-label={playing ? 'Pause song' : 'Play song'}
                 title={playing ? 'Pause' : 'Play'}
               >
                 {playing ? '⏸️' : '▶️'}
@@ -451,6 +453,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
               <button 
                 onClick={() => handleNext('manual')}
                 className="control-btn next-btn"
+                aria-label="Next song"
                 title="Next song"
               >
                 ⏭️
@@ -497,6 +500,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
                 value={progress}
                 onChange={e => seekTo(Number(e.target.value))}
                 className="progress-slider"
+                aria-label="Track progress"
               />
               <div className="time-display">
                 <span>{formatTime(progress)}</span>
@@ -525,6 +529,7 @@ export default function Player({ songs, currentIndex, setCurrentIndex, queueOrde
                     }
                   }}
                   className="slider"
+                  aria-label="Volume"
                 />
                 <span>{Math.round(volume * 100)}%</span>
               </div>

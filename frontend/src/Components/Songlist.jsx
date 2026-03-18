@@ -24,6 +24,8 @@ const SongList = ({ songs, onPlay, currentSongId, favorites = [], onFavorite }) 
           <img 
             src={`${API_BASE_URL}/media/${song.cover}`} 
             alt={song.title}
+            loading="lazy"
+            decoding="async"
             onClick={() => onPlay(index)}
           />
           <h3>{song.title}</h3>
