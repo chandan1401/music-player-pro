@@ -55,7 +55,11 @@
 html, body {
   width: 100%;
   min-height: 100%;
+  min-height: 100dvh;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Paper Texture Overlay */
@@ -88,16 +92,17 @@ body::before {
 
 .app {
   min-height: 100vh;
+  min-height: 100dvh;
   min-width: 100vw;
-  background: 
+  background:
     /* Aged stain effects */
     radial-gradient(ellipse at 15% 20%, var(--coffee-stain) 0%, transparent 50%),
     radial-gradient(ellipse at 85% 75%, var(--coffee-stain) 0%, transparent 45%),
     radial-gradient(ellipse at 50% 90%, rgba(139, 90, 43, 0.08) 0%, transparent 40%),
     /* Base parchment gradient */
-    linear-gradient(180deg, 
-      var(--parchment-light) 0%, 
-      var(--parchment-base) 30%, 
+    linear-gradient(180deg,
+      var(--parchment-light) 0%,
+      var(--parchment-base) 30%,
       var(--parchment-dark) 70%,
       var(--parchment-aged) 100%
     );
@@ -107,6 +112,11 @@ body::before {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  /* Support for iOS safe areas */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Decorative worn edges */
@@ -2313,32 +2323,66 @@ aside {
 @media (max-width: 768px) {
   .header-inner {
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     text-align: left;
-    width: calc(100% - 24px);
+    width: calc(100% - 20px);
+    padding: 8px 0;
   }
 
   .menu-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
   }
 
   .brand {
     flex-direction: row;
     flex: 1;
     min-width: 0;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 45px;
+    height: 45px;
+  }
+
+  .brand-mark img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .app header h1 {
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .subhead {
+    font-size: 12px;
   }
 
   .header-content {
     width: 100%;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 12px;
+    gap: 8px;
   }
 
   .search {
     width: 100%;
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+
+  /* Hide mood and jam buttons on smaller screens - use menu instead */
+  .mood-btn,
+  .jam-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    flex: 1;
+    min-width: 0;
   }
 
   .theme-switcher {
@@ -2347,9 +2391,14 @@ aside {
     justify-content: center;
   }
 
+  .controls-bar {
+    padding: 10px 0;
+  }
+
   .controls-inner {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
   }
 
   .sort-controls,
@@ -2358,26 +2407,36 @@ aside {
     justify-content: space-between;
   }
 
+  .sort-controls select,
+  .genre-filter select {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px;
+  }
+
   .stats {
     margin-left: 0;
     text-align: center;
+    font-size: 12px;
   }
 
   .song-list {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
   }
 
   .app-sidebar {
     position: fixed;
     top: 0;
     right: 0;
-    width: min(86vw, 360px);
+    width: min(90vw, 360px);
     height: 100vh;
-    padding: 70px 12px 24px;
+    height: 100dvh;
+    padding: 60px 12px 24px;
     background: rgba(232, 213, 163, 0.98);
     border-left: 1px solid var(--ink-light);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: 120;
     grid-template-columns: 1fr;
     transform: translateX(100%);
@@ -2398,90 +2457,188 @@ aside {
     z-index: 110;
   }
 
+  /* Mobile Player - Floating centered bottom bar */
   .player {
     left: 50%;
     right: auto;
-    bottom: 10px;
-    width: min(92vw, 400px);
-    max-width: 400px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    max-width: 380px;
     min-width: 280px;
-    padding: 12px;
+    padding: 10px 14px;
     transform: translateX(-50%);
+    border-radius: 16px;
   }
 
   .player-main {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
+    flex-direction: row;
+    gap: 10px;
+    text-align: left;
+    align-items: center;
   }
 
   .album-cover-box {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+  }
+
+  .album-cover {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .album-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 100px;
+    overflow: hidden;
+  }
+
+  .song-title {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .song-artist {
+    font-size: 11px;
+  }
+
+  .controls {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 2px;
   }
 
   .playback-controls {
-    justify-content: center;
+    justify-content: flex-end;
     flex-wrap: nowrap;
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
+    gap: 4px;
   }
 
-  .control-btn,
-  .play-btn {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
-    font-size: 16px;
+  /* Touch-friendly control buttons */
+  .control-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 15px;
+    border-radius: 10px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .play-btn {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 17px;
+  }
+
+  /* Hide less essential controls on mobile */
+  .control-btn:nth-child(n+5) {
+    display: none;
   }
 
   .audio-controls {
-    flex-wrap: wrap;
-    justify-content: center;
+    display: none !important;
+  }
+
+  .content-grid {
+    padding-bottom: 100px;
+  }
+
+  /* Header decorative elements - hide on mobile */
+  .app header::before,
+  .app header::after {
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .app header h1 {
-    font-size: 24px;
-  }
-
-  .subhead {
+  html {
     font-size: 14px;
   }
 
+  .app header {
+    padding: 10px 0;
+  }
+
+  .app header h1 {
+    font-size: 20px;
+  }
+
+  .subhead {
+    font-size: 11px;
+    display: none;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-mark img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-content {
+    gap: 6px;
+  }
+
+  .search {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  /* Stack mood/jam buttons vertically on very small screens */
+  .mood-btn,
+  .jam-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
   .song-list {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .content-grid {
-    width: calc(100% - 20px);
-    padding-bottom: 220px;
+    width: calc(100% - 16px);
+    padding-bottom: 120px;
   }
 
   .song-card {
-    padding: 10px;
+    padding: 8px;
+    border-radius: 10px;
   }
 
   .song-card img {
-    height: 100px;
+    height: 90px;
+    border-radius: 8px;
   }
 
   .song-card h3 {
     font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.3;
   }
 
   .song-card p {
-    font-size: 11px;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .song-card .actions {
+    margin-top: 6px;
+    gap: 4px;
+  }
+
+  .song-card .actions button {
+    padding: 6px 8px;
+    font-size: 12px;
   }
 
   .theme-btn {
@@ -2489,10 +2646,232 @@ aside {
     font-size: 11px;
   }
 
+  .controls-bar {
+    padding: 8px 0;
+  }
+
+  .sort-controls,
+  .genre-filter {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sort-controls label,
+  .genre-filter label {
+    font-size: 11px;
+  }
+
+  /* Extra compact player for small phones */
+  .player {
+    bottom: 8px;
+    padding: 8px 12px;
+    width: calc(100% - 16px);
+    border-radius: 14px;
+  }
+
+  .player-main {
+    gap: 8px;
+  }
+
+  .album-cover {
+    width: 42px;
+    height: 42px;
+  }
+
+  .album-info {
+    max-width: 80px;
+  }
+
+  .song-title {
+    font-size: 12px;
+  }
+
+  .song-artist {
+    font-size: 10px;
+  }
+
+  .control-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    font-size: 14px;
+  }
+
+  .play-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 15px;
+  }
+
+  /* Only show play/pause, prev, next on very small screens */
+  .playback-controls .control-btn:nth-child(n+4) {
+    display: none;
+  }
+
+  /* Sidebar adjustments */
+  .app-sidebar {
+    width: 100vw;
+    padding-top: 50px;
+  }
+
+  .menu-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  /* Hide stats on very small screens */
+  .stats {
+    display: none;
+  }
+}
+
+/* Extra small screens (very small phones) */
+@media (max-width: 360px) {
+  .brand-copy {
+    display: none;
+  }
+
+  .header-inner {
+    gap: 8px;
+  }
+
   .mood-btn,
   .jam-btn {
-    width: 100%;
-    justify-content: center;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .song-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .song-card img {
+    height: 80px;
+  }
+
+  .song-card h3 {
+    font-size: 11px;
+  }
+
+  .player {
+    padding: 6px 10px;
+  }
+
+  .album-cover {
+    width: 38px;
+    height: 38px;
+  }
+
+  .album-info {
+    max-width: 60px;
+  }
+
+  .control-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  .play-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .control-btn,
+  .play-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .play-btn {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Remove hover effects that don't work well on touch */
+  .control-btn:hover,
+  .play-btn:hover,
+  .song-card:hover {
+    transform: none;
+  }
+
+  /* Add active states for touch feedback */
+  .control-btn:active,
+  .play-btn:active {
+    transform: scale(0.95);
+    background: rgba(184, 134, 11, 0.3);
+  }
+
+  .song-card:active {
+    transform: scale(0.98);
+  }
+
+  /* Disable hover-only effects */
+  .song-card:hover::before {
+    border-width: 0 30px 30px 0;
+  }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app header {
+    padding: 8px 0;
+  }
+
+  .brand-mark {
+    width: 35px;
+    height: 35px;
+  }
+
+  .brand-mark img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .app header h1 {
+    font-size: 18px;
+  }
+
+  .subhead {
+    display: none;
+  }
+
+  .controls-bar {
+    padding: 6px 0;
+  }
+
+  .content-grid {
+    padding-bottom: 80px;
+  }
+
+  .player {
+    bottom: 4px;
+    padding: 6px 10px;
+  }
+
+  .album-cover {
+    width: 36px;
+    height: 36px;
+  }
+
+  .control-btn {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+  }
+
+  .play-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
   }
 }
 
