@@ -5,7 +5,17 @@ Write-Host "`n╔═════════════════════
 Write-Host "║    🎵 MUSIC PLAYER - AUTO LAUNCHER 🎵     ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
-$projectRoot = "C:\Users\chand\OneDrive\Desktop\music-player"
+$projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+function Test-CommandExists {
+    param([string]$CommandName)
+    return [bool](Get-Command $CommandName -ErrorAction SilentlyContinue)
+}
+
+if (-not (Test-CommandExists "npm")) {
+    Write-Host "❌ npm is not installed or not in PATH. Install Node.js and try again." -ForegroundColor Red
+    exit 1
+}
 
 # Step 1: Clean up old processes
 Write-Host "[1/5] Cleaning up old processes..." -ForegroundColor Yellow
@@ -58,9 +68,13 @@ Write-Host "╚═════════════════════�
 $emotion = Read-Host "Enter Y for Yes, N for No"
 
 if ($emotion -eq "Y" -or $emotion -eq "y") {
-    Write-Host "`nStarting Emotion API..." -ForegroundColor Yellow
-    Start-Process cmd -ArgumentList "/k", "cd /d $projectRoot\emotion-music-generator2\src && title EMOTION API - PORT 5001 && python emotion_api.py"
-    Write-Host "✅ Emotion API started`n" -ForegroundColor Green
+    if (-not (Test-CommandExists "python")) {
+        Write-Host "⚠️  Python not found in PATH, skipping Emotion API." -ForegroundColor Yellow
+    } else {
+        Write-Host "`nStarting Emotion API..." -ForegroundColor Yellow
+        Start-Process cmd -ArgumentList "/k", "cd /d $projectRoot\emotion-music-generator2\src && title EMOTION API - PORT 5001 && python emotion_api.py"
+        Write-Host "✅ Emotion API started`n" -ForegroundColor Green
+    }
 }
 
 # Verify servers
@@ -78,7 +92,7 @@ try {
 }
 
 $frontendPort = $null
-foreach ($port in @(3000, 5173, 3001)) {
+foreach ($port in @(5173, 3000, 3001, 4173)) {
     try {
         Invoke-WebRequest "http://localhost:$port" -UseBasicParsing -TimeoutSec 2 | Out-Null
         Write-Host "✅ Frontend is LIVE (http://localhost:$port)" -ForegroundColor Green
@@ -89,7 +103,7 @@ foreach ($port in @(3000, 5173, 3001)) {
 
 if (-not $frontendPort) {
     Write-Host "⚠️  Frontend still building... (check FRONTEND window)" -ForegroundColor Yellow
-    $frontendPort = 3000
+    $frontendPort = 5173
 }
 
 # Open browser

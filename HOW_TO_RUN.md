@@ -17,7 +17,7 @@ Just **double-click** one of these files:
 ✅ Kills old processes  
 ✅ Checks and installs dependencies  
 ✅ Starts Backend (Port 4000)  
-✅ Starts Frontend (Port 3000)  
+✅ Starts Frontend (Port 5173, fallback 3000)  
 ✅ Opens browser automatically  
 ✅ Optional: Starts Emotion API for mood detection  
 
@@ -49,7 +49,7 @@ python emotion_api.py
 ## 📝 Server Ports
 
 - **Backend:** http://localhost:4000
-- **Frontend:** http://localhost:3000
+- **Frontend:** http://localhost:5173 (or http://localhost:3000)
 - **Emotion API:** http://localhost:5001 (optional)
 
 ---
@@ -78,6 +78,13 @@ python emotion_api.py
 
 ### "Port already in use"
 Close all server windows and run the starter script again.
+
+### Frontend not opening
+Try both URLs:
+- `http://localhost:5173`
+- `http://localhost:3000`
+
+Vite may choose either port depending on availability.
 
 ### Frontend shows errors
 Wait 10-15 seconds for backend to fully start, then refresh browser.

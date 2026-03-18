@@ -46,7 +46,7 @@ echo     Backend started!
 echo.
 
 REM Start Frontend Server
-echo [5/5] Starting Frontend (Port 3000)...
+echo [5/5] Starting Frontend (Port 5173/3000)...
 cd /d "%~dp0frontend"
 start "FRONTEND - PORT 3000" cmd /k "npm run dev"
 ping 127.0.0.1 -n 9 >nul
@@ -72,7 +72,7 @@ echo    ALL SERVERS STARTED!
 echo ========================================
 echo.
 echo  Backend:  http://localhost:4000
-echo  Frontend: http://localhost:3000
+echo  Frontend: http://localhost:5173 (or 3000)
 echo.
 echo ========================================
 echo    MOBILE ACCESS:
@@ -88,7 +88,7 @@ echo Opening browser in 5 seconds...
 ping 127.0.0.1 -n 6 >nul
 
 REM Open browser
-start http://localhost:3000
+start http://localhost:5173
 
 echo.
 echo ========================================
