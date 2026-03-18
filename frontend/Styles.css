@@ -2399,14 +2399,14 @@ aside {
   }
 
   .player {
-    left: 10px;
-    right: 10px;
+    left: 50%;
+    right: auto;
     bottom: 10px;
-    width: auto;
-    max-width: none;
-    min-width: 0;
+    width: min(92vw, 400px);
+    max-width: 400px;
+    min-width: 280px;
     padding: 12px;
-    transform: none;
+    transform: translateX(-50%);
   }
 
   .player-main {
