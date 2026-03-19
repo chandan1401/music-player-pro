@@ -451,6 +451,69 @@
       "path": "songs/Neutral Songs/Teri Jhuki Nazar Murder 3 320 Kbps.mp3",
       "cover": "images/Neutral Songs/teri-jhuki-nazar.jpg",
       "duration": 230
+    },
+    {
+      "id": 47,
+      "title": "Aarzu",
+      "artist": "DjBaap",
+      "genre": "pop",
+      "path": "songs/Aarzu - DjBaap.mp3",
+      "cover": "images/default.jpg",
+      "duration": 180
+    },
+    {
+      "id": 48,
+      "title": "Baarish Mein Phir",
+      "artist": "Saahel",
+      "genre": "romantic",
+      "path": "songs/Baarish Mein Phir - Saahel [128 Kbps]-(SongsPk.com.se).mp3",
+      "cover": "images/default.jpg",
+      "duration": 200
+    },
+    {
+      "id": 49,
+      "title": "Deewaana Deewaana",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "path": "songs/Deewaana Deewaana (PenduJatt.Com.Se).mp3",
+      "cover": "images/default.jpg",
+      "duration": 220
+    },
+    {
+      "id": 50,
+      "title": "HIGH ON YOU",
+      "artist": "Various Artists",
+      "genre": "pop",
+      "path": "songs/HIGH ON YOU(KoshalWorld.Com).mp3",
+      "cover": "images/default.jpg",
+      "duration": 190
+    },
+    {
+      "id": 51,
+      "title": "Khat",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "path": "songs/Khat.mp3",
+      "cover": "images/default.jpg",
+      "duration": 210
+    },
+    {
+      "id": 52,
+      "title": "Meri Banogi Kya",
+      "artist": "Various Artists",
+      "genre": "romantic",
+      "path": "songs/Meri Banogi Kya(KoshalWorld.Com).mp3",
+      "cover": "images/default.jpg",
+      "duration": 195
+    },
+    {
+      "id": 53,
+      "title": "Soniyo",
+      "artist": "Raaz The Mystery Continues",
+      "genre": "romantic",
+      "path": "songs/Soniyo Raaz The Mystery Continues 320 Kbps.mp3",
+      "cover": "images/default.jpg",
+      "duration": 240
     }
   ]
 }
